@@ -33,7 +33,7 @@ void loop() {
   playRain(rain_2, lastRain2);
   lastRain2 = rain_2;
 
-  delay(100);  // delay between reads
+  delay(50);  // delay between reads
 }
 
 void printValue(int pinNr, int rain, int lastRain) {
@@ -49,7 +49,7 @@ void sendDrum(int cmd, int pitch, int velocity) {
 }
 
 void playRain(int rain, int lastRain) {
-  if ((rain < (lastRain - 100)) || (rain > (lastRain + 100))) {
+  if ((rain < (lastRain - 50)) || (rain > (lastRain + 50))) {
     if (rain <= 300) {
       sendDrum(NOTE_ON, CL_HAT, 127);
     } else if (rain > 300 && rain <= 500) {
