@@ -1,4 +1,8 @@
 #include "volca_beats.h"
+#include <Adafruit_NeoPixel.h>
+
+// nr of led, pin to send data
+Adafruit_NeoPixel pixels(1, 7, NEO_GRB + NEO_KHZ800);
 
 #define RAIN_0 A0
 #define RAIN_1 A1
@@ -13,6 +17,10 @@ int lastRain3 = 1024;
 int lastRain4 = 1024;
 int lastRain5 = 1024;
 
+#define LED_1 1
+
+#define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
+
 void setup() {
   //monitor
   Serial.begin(9600);
@@ -20,9 +28,14 @@ void setup() {
   // initialize beat
   Serial1.begin(31250);
 
+  //pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  //pixels.show(); // turn off all pixels asap
 }
 
 void loop() {
+  //pixels.clear(); // Set all pixel colors to 'off'
+  //pixels.show();
+  
   //todo: optimize code
   int rain_0 = analogRead(RAIN_0);
   int rain_1 = analogRead(RAIN_1);
@@ -55,7 +68,7 @@ void loop() {
   playRain(rain_5, lastRain5, OP_HAT);
   lastRain5 = rain_5;
 
-  delay(5000);  // delay between reads
+  delay(50);  // delay between reads
 }
 
 void printValue(int pinNr, int rain, int lastRain) {
@@ -73,5 +86,18 @@ void sendDrum(int cmd, int pitch, int velocity) {
 void playRain(int rain, int lastRain, int note) {
   if ((rain < (lastRain - 50)) || (rain > (lastRain + 50))) {
       sendDrum(NOTE_ON, note, 127);
+      sendDrum(NOTE_OFF, note, 127);
+      //blinkLight(0);
   }
+}
+
+void blinkLight(int lednr) {
+    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+    // Here we're using a moderately bright green color:
+    pixels.setPixelColor(lednr, pixels.Color(0, 0, 230));
+
+    pixels.show();   // Send the updated pixel colors to the hardware.
+    delay(50);
+    pixels.clear();
+    pixels.show();
 }
