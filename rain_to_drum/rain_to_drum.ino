@@ -28,13 +28,11 @@ void setup() {
   // initialize beat
   Serial1.begin(31250);
 
-  //pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-  //pixels.show(); // turn off all pixels asap
+  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  pixels.show(); // turn off all pixels asap
 }
 
 void loop() {
-  //pixels.clear(); // Set all pixel colors to 'off'
-  //pixels.show();
   
   //todo: optimize code
   int rain_0 = analogRead(RAIN_0);
@@ -87,15 +85,14 @@ void playRain(int rain, int lastRain, int note) {
   if ((rain < (lastRain - 50)) || (rain > (lastRain + 50))) {
       sendDrum(NOTE_ON, note, 127);
       sendDrum(NOTE_OFF, note, 127);
-      //blinkLight(0);
+      blinkLight(0);
   }
 }
 
 void blinkLight(int lednr) {
     // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
     // Here we're using a moderately bright green color:
-    pixels.setPixelColor(lednr, pixels.Color(0, 0, 230));
-
+    pixels.setPixelColor(lednr, pixels.Color(0, 0, 255));
     pixels.show();   // Send the updated pixel colors to the hardware.
     delay(50);
     pixels.clear();
