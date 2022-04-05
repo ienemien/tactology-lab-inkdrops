@@ -2,7 +2,7 @@
 #include <Adafruit_NeoPixel.h>
 
 // nr of led, pin to send data
-Adafruit_NeoPixel pixels(1, 7, NEO_GRB + NEO_KHZ800);
+Adafruit_NeoPixel pixels(6, 7, NEO_GRB + NEO_KHZ800);
 
 #define RAIN_0 A0
 #define RAIN_1 A1
@@ -29,7 +29,8 @@ void setup() {
   Serial1.begin(31250);
 
   pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-  pixels.show(); // turn off all pixels asap
+  pixels.clear();
+  pixels.show();
 }
 
 void loop() {
