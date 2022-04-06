@@ -23,14 +23,15 @@ int lastRain5 = 1024;
 
 void setup() {
   //monitor
-  Serial.begin(9600);
+  //Serial.begin(9600);
 
   // initialize beat
-  Serial1.begin(31250);
+  delay(3000);
+  Serial.begin(31250);
 
-  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-  pixels.clear();
-  pixels.show();
+//  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+//  pixels.clear();
+//  pixels.show();
 }
 
 void loop() {
@@ -61,17 +62,18 @@ void printValue(int pinNr, int rain, int lastRain) {
 }
 
 void sendDrum(int cmd, int pitch, int velocity) {
-  Serial1.write(cmd);
-  Serial1.write(pitch);
-  Serial1.write(velocity);
+  Serial.write(cmd);
+  Serial.write(pitch);
+  Serial.write(velocity);
 }
 
 void playRain(int pin, int rain, int& lastRain, int note) {
   printValue(pin, rain, lastRain);
   if ((rain < (lastRain - 50)) || (rain > (lastRain + 50))) {
       sendDrum(NOTE_ON, note, 127);
-      sendDrum(NOTE_OFF, note, 127);
-      blinkLight(pin);
+      delay(100);
+      sendDrum(NOTE_OFF, note, 0);
+      //blinkLight(pin);
   }
   lastRain = rain;
 }
