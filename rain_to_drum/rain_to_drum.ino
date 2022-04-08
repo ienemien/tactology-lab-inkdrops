@@ -29,13 +29,21 @@ void setup() {
   delay(3000);
   Serial.begin(31250);
 
-//  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
-//  pixels.clear();
-//  pixels.show();
+  pixels.begin(); // INITIALIZE NeoPixel strip object (REQUIRED)
+  pixels.clear();
+  pixels.show();
+
+  delay(500);
+//  blinkLight(0);
+//  blinkLight(1);
+//  blinkLight(2);
+//  blinkLight(3);
+//  blinkLight(4);
+//  blinkLight(5);
 }
 
 void loop() {
-  
+
   //todo: optimize code
   int rain_0 = analogRead(RAIN_0);
   int rain_1 = analogRead(RAIN_1);
@@ -44,7 +52,7 @@ void loop() {
   int rain_4 = analogRead(RAIN_4);
   int rain_5 = analogRead(RAIN_5);
 
-  
+
   playRain(0, rain_0, lastRain0, CLAP);
   playRain(1, rain_1, lastRain1, CLAVES);
   playRain(2, rain_2, lastRain2, AGOGO);
@@ -55,11 +63,11 @@ void loop() {
   delay(100);  // delay between reads
 }
 
-void printValue(int pinNr, int rain, int lastRain) {
-  char buffer[40];
-  sprintf(buffer, "%d: %d last value: %d", pinNr, rain, lastRain);
-  Serial.println(buffer);
-}
+//void printValue(int pinNr, int rain, int lastRain) {
+//  char buffer[40];
+//  sprintf(buffer, "%d: %d last value: %d", pinNr, rain, lastRain);
+//  Serial.println(buffer);
+//}
 
 void sendDrum(int cmd, int pitch, int velocity) {
   Serial.write(cmd);
@@ -68,22 +76,22 @@ void sendDrum(int cmd, int pitch, int velocity) {
 }
 
 void playRain(int pin, int rain, int& lastRain, int note) {
-  printValue(pin, rain, lastRain);
-  if ((rain < (lastRain - 50)) || (rain > (lastRain + 50))) {
-      sendDrum(NOTE_ON, note, 127);
-      delay(100);
-      sendDrum(NOTE_OFF, note, 0);
-      //blinkLight(pin);
+//  printValue(pin, rain, lastRain);
+  if (rain < lastRain && ((rain < (lastRain - 50)) || (rain > (lastRain + 50)))) {
+    sendDrum(NOTE_ON, note, 127);
+    delay(100);
+    sendDrum(NOTE_OFF, note, 0);
+    blinkLight(pin);
   }
   lastRain = rain;
 }
 
 void blinkLight(int lednr) {
-    // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-    // Here we're using a moderately bright green color:
-    pixels.setPixelColor(lednr, pixels.Color(0, 0, 255));
-    pixels.show();   // Send the updated pixel colors to the hardware.
-    delay(50);
-    pixels.clear();
-    pixels.show();
+  // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
+  // Here we're using a moderately bright green color:
+  pixels.setPixelColor(lednr, pixels.Color(0, 0, 255));
+  pixels.show();   // Send the updated pixel colors to the hardware.
+  delay(50);
+  pixels.clear();
+  pixels.show();
 }
