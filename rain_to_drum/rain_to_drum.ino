@@ -56,11 +56,11 @@ void loop() {
   playRain(0, rain_0, lastRain0, CLAP);
   playRain(1, rain_1, lastRain1, CLAVES);
   playRain(2, rain_2, lastRain2, AGOGO);
-  playRain(3, rain_3, lastRain3, CRASH);
+  playRain(3, rain_3, lastRain3, KICK);
   playRain(4, rain_4, lastRain4, HI_TOM);
-  playRain(5, rain_5, lastRain5, OP_HAT);
+  playRain(5, rain_5, lastRain5, LO_TOM);
 
-  delay(100);  // delay between reads
+  delay(50);  // delay between reads
 }
 
 //void printValue(int pinNr, int rain, int lastRain) {
@@ -77,9 +77,9 @@ void sendDrum(int cmd, int pitch, int velocity) {
 
 void playRain(int pin, int rain, int& lastRain, int note) {
 //  printValue(pin, rain, lastRain);
-  if (rain < lastRain && ((rain < (lastRain - 50)) || (rain > (lastRain + 50)))) {
+  if (rain < lastRain && ((rain < (lastRain - 30)) || (rain > (lastRain + 30)))) {
     sendDrum(NOTE_ON, note, 127);
-    delay(100);
+    delay(50);
     sendDrum(NOTE_OFF, note, 0);
     blinkLight(pin);
   }
