@@ -17,8 +17,6 @@ int lastRain3 = 1024;
 int lastRain4 = 1024;
 int lastRain5 = 1024;
 
-#define LED_1 1
-
 #define DELAYVAL 500 // Time (in milliseconds) to pause between pixels
 
 void setup() {
@@ -34,17 +32,9 @@ void setup() {
   pixels.show();
 
   delay(500);
-//  blinkLight(0);
-//  blinkLight(1);
-//  blinkLight(2);
-//  blinkLight(3);
-//  blinkLight(4);
-//  blinkLight(5);
 }
 
 void loop() {
-
-  //todo: optimize code
   int rain_0 = analogRead(RAIN_0);
   int rain_1 = analogRead(RAIN_1);
   int rain_2 = analogRead(RAIN_2);
@@ -63,12 +53,6 @@ void loop() {
   delay(50);  // delay between reads
 }
 
-//void printValue(int pinNr, int rain, int lastRain) {
-//  char buffer[40];
-//  sprintf(buffer, "%d: %d last value: %d", pinNr, rain, lastRain);
-//  Serial.println(buffer);
-//}
-
 void sendDrum(int cmd, int pitch, int velocity) {
   Serial.write(cmd);
   Serial.write(pitch);
@@ -76,7 +60,6 @@ void sendDrum(int cmd, int pitch, int velocity) {
 }
 
 void playRain(int pin, int rain, int& lastRain, int note) {
-//  printValue(pin, rain, lastRain);
   if (rain < lastRain && ((rain < (lastRain - 30)) || (rain > (lastRain + 30)))) {
     sendDrum(NOTE_ON, note, 127);
     delay(50);
@@ -88,7 +71,6 @@ void playRain(int pin, int rain, int& lastRain, int note) {
 
 void blinkLight(int lednr) {
   // pixels.Color() takes RGB values, from 0,0,0 up to 255,255,255
-  // Here we're using a moderately bright green color:
   pixels.setPixelColor(lednr, pixels.Color(0, 0, 255));
   pixels.show();   // Send the updated pixel colors to the hardware.
   delay(50);
